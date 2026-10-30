@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agente de Contenido · Antagonista</title>
+<meta name="description" content="Tu agente de IA, entrenado con tu marca, crea el contenido de Instagram, TikTok, Facebook y LinkedIn. Tú solo revisas y apruebas.">
+<meta property="og:title" content="Contenido con tu voz. Sin tanto esfuerzo.">
+<meta property="og:description" content="Tu agente de IA, entrenado con tu marca, crea el contenido de tus redes. Tú solo revisas y apruebas.">
+<link rel="icon" href="assets/isotipo.svg" type="image/svg+xml">
+<style>
+:root{
+  --blue:#2979FF; --black:#000; --white:#fff; --ink:#0a0a0a; --line:#222; --soft:#f3f3f1; --card:#111;
+  --f:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --w:1240px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--black);color:var(--white);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 32px}
+html[lang="es"] [data-l="en"], html[lang="en"] [data-l="es"]{display:none!important}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--blue)}
+h1,h2,h3{font-weight:700;letter-spacing:-.035em;line-height:.95;text-transform:uppercase}
+h1{font-size:clamp(46px,6.4vw,96px)}
+h2{font-size:clamp(36px,5vw,68px)}
+h3{font-size:24px;letter-spacing:-.02em;line-height:1.05}
+.blue{color:var(--blue)}
+.center{text-align:center}
+/* nav */
+nav{position:sticky;top:0;z-index:30;background:rgba(0,0,0,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo,.iso{display:block}
+.logo svg,.iso svg{width:100%;height:auto;display:block}
+.logo{width:156px;color:var(--white)}
+.navr{display:flex;align-items:center;gap:14px}
+.lang{display:flex;border:1px solid #444;border-radius:99px;overflow:hidden}
+.lang button{background:none;border:0;color:#aaa;font:700 12px var(--f);letter-spacing:.08em;padding:8px 12px;cursor:pointer}
+html[lang="es"] .lang [data-set="es"], html[lang="en"] .lang [data-set="en"]{background:var(--white);color:var(--black)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;font:700 15px var(--f);letter-spacing:.04em;text-transform:uppercase;text-decoration:none;padding:16px 24px;border-radius:99px;border:2px solid currentColor;transition:transform .15s,background .15s,color .15s,box-shadow .15s;cursor:pointer;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn.solid{background:var(--blue);border-color:var(--blue);color:var(--white);box-shadow:0 10px 40px rgba(41,121,255,.35)}
+.btn.solid:hover{background:var(--white);color:var(--black);border-color:var(--white)}
+.btn.small{padding:10px 18px;font-size:12px;box-shadow:none}
+.btn.xl{font-size:clamp(17px,1.5vw,20px);padding:24px 40px}
+.btn.xxl{font-size:clamp(19px,2vw,26px);padding:30px 56px}
+.btn.ghost{color:#fff;border-color:#555}
+.btn.ghost:hover{border-color:#fff}
+/* hero */
+.hero{position:relative;padding:72px 0 88px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.fitline{display:inline-block;font-size:clamp(15px,1.3vw,18px);font-weight:700;border-left:3px solid var(--blue);padding:4px 0 4px 12px;max-width:520px}
+.hero h1{margin:22px 0 22px}
+.hero .sub{font-size:clamp(18px,1.6vw,21px);color:#d4d4d4;max-width:540px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.ff{display:flex;align-items:center;gap:12px;margin-top:22px;font-size:15px;color:#cfcfcf;flex-wrap:wrap}
+.ff b{background:#fff;color:#000;padding:6px 12px;border-radius:99px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.byline{margin-top:28px;font-size:13px;color:#7d7d7d;max-width:480px}
+/* product window */
+.visual{position:relative}
+.visual .brush{position:absolute;inset:-18% -30% auto auto;width:130%;opacity:.95;transform:rotate(10deg);pointer-events:none;z-index:0}
+.win{position:relative;z-index:1;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:22px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.7)}
+.win .bar{display:flex;align-items:center;gap:7px;padding:14px 18px;border-bottom:1px solid #222}
+.win .bar span{width:11px;height:11px;border-radius:50%;background:#333}
+.win .bar em{margin-left:auto;font-style:normal;font-size:11px;letter-spacing:.14em;color:#777;text-transform:uppercase}
+.win .body{padding:24px 22px 24px;display:grid;gap:16px}
+.msg{justify-self:end;background:var(--blue);color:#fff;font-weight:700;padding:13px 20px;border-radius:18px 18px 4px 18px;font-size:18px}
+.reply{font-size:14px;color:#a9a9a9}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.oc{background:#161616;border:1px solid #2a2a2a;border-radius:14px;padding:15px}
+.oc .t{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--blue);border:1px solid #2c3f63;border-radius:99px;padding:2px 8px;margin-bottom:9px}
+.oc b{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.oc small{display:block;color:#8e8e8e;font-size:12.5px;line-height:1.35}
+.approve{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #222;padding-top:14px;font-size:13px;color:#a9a9a9}
+.approve .ok{background:#fff;color:#000;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:9px 16px;border-radius:99px;white-space:nowrap}
+/* marquee */
+.marquee{background:var(--blue);color:var(--white);overflow:hidden;white-space:nowrap}
+.marquee div{display:inline-block;padding:18px 0;font-weight:700;font-size:16px;letter-spacing:.14em;text-transform:uppercase;animation:mq 40s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee div{animation:none}}
+section{padding:112px 0}
+.light{background:var(--white);color:var(--ink)}
+.soft{background:var(--soft);color:var(--ink)}
+.sec-title{max-width:900px;margin:0 auto 56px;text-align:center}
+.sec-title h2{margin-top:14px}
+.sec-title p{margin:18px auto 0;font-size:clamp(17px,1.5vw,20px);color:#555;max-width:620px}
+section:not(.light):not(.soft) .sec-title p{color:#bdbdbd}
+/* before / after */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ba .col{border-radius:24px;padding:34px 36px}
+.ba .before{background:#fff;border:1px solid #dedede}
+.ba .after{background:var(--ink);color:#fff}
+.ba .lbl{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-bottom:6px}
+.ba .after .lbl{color:var(--blue)}
+.ba .row{padding:24px 0;border-top:1px solid #e9e9e9;font-size:clamp(18px,1.7vw,22px);line-height:1.3;display:flex;gap:16px}
+.ba .row:first-of-type{border-top:0}
+.ba .after .row{border-top-color:#262626;font-weight:700}
+.ba .before .row{color:#5a5a5a;text-decoration:line-through;text-decoration-color:rgba(0,0,0,.25);text-decoration-thickness:1px}
+.ba .row i{font-style:normal;font-size:13px;font-weight:700;color:#bbb;min-width:24px;padding-top:4px;text-decoration:none}
+.ba .after .row i{color:var(--blue)}
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(260px,auto);gap:16px}
+.tile{border-radius:24px;padding:30px;background:var(--card);border:1px solid #242424;display:flex;flex-direction:column;justify-content:space-between;gap:22px;overflow:hidden;position:relative}
+.tile h3{font-size:clamp(22px,2vw,28px)}
+.tile p{color:#a9a9a9;font-size:15.5px;margin-top:8px;max-width:420px}
+.t-reels{grid-column:span 3;grid-row:span 2;background:var(--blue);border-color:var(--blue)}
+.t-reels p{color:#e6eeff}
+.t-strat{grid-column:span 3}
+.bento .t-copy{grid-column:span 3}
+.bento .t-cal{grid-column:span 2}
+.bento .t-script{grid-column:span 4}
+/* reels phone */
+.phones{display:flex;gap:14px;justify-content:center;align-items:flex-end}
+.phone{width:clamp(120px,13vw,170px);aspect-ratio:9/16;border-radius:24px;background:linear-gradient(170deg,#3a3a3a,#0b0b0b 70%);border:6px solid #0a0a0a;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:0 10px 30px;color:#fff;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.phone.side{transform:scale(.86);opacity:.75}
+.phone .s{font-weight:700;font-size:13px;line-height:1.15;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.phone .s em{display:block;font-family:var(--serif);font-style:italic;color:#ff2b4a;font-size:19px;font-weight:600}
+.phone .play{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);margin:auto 0 18px;display:grid;place-items:center}
+.phone .play:after{content:"";border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+/* doc mock */
+.doc{align-self:flex-end;width:62%;background:#fff;border-radius:10px;padding:16px;display:grid;gap:8px;transform:rotate(-3deg) translateY(16px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.doc .h{height:12px;width:55%;background:var(--blue);border-radius:4px}
+.doc .l{height:7px;background:#e3e3e3;border-radius:4px}
+.doc .l.s{width:70%}
+.doc .row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:4px}
+.doc .row2 span{height:34px;border-radius:6px;background:#eef3ff;border:1px solid #d6e3ff}
+/* calendar mock */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal span{aspect-ratio:1;border-radius:7px;background:#1b1b1b;border:1px solid #262626;position:relative}
+.cal span.p{background:#1c2b47;border-color:#2f4d85}
+.cal span.p:after{content:"";position:absolute;inset:auto 0 22% 0;margin:auto;width:7px;height:7px;border-radius:50%;background:var(--blue)}
+/* copy chips */
+.nets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.nets div{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:14px 12px}
+.nets b{display:block;font-size:12px;letter-spacing:.08em;margin-bottom:8px}
+.nets i{display:block;height:6px;border-radius:3px;background:#2e2e2e;margin-top:6px}
+.nets i.s{width:60%}
+/* script strip */
+.t-script{flex-direction:row;align-items:center}
+.scenes{display:flex;gap:10px;flex:1;justify-content:flex-end;flex-wrap:wrap}
+.scene{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;padding:14px 16px;min-width:150px}
+.scene small{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--blue);margin-bottom:6px}
+.scene span{font-size:14px;color:#ddd}
+/* case */
+.case{display:grid;grid-template-columns:.8fr 1.6fr;gap:40px;align-items:center;background:#fff;border:1px solid #e1e1e1;border-radius:28px;padding:44px}
+.case .tag{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+.case h3{font-size:clamp(28px,3vw,40px);margin:12px 0 28px}
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.flow div{background:var(--soft);border-radius:18px;padding:22px 20px;position:relative}
+.flow div:not(:last-child):after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);font-weight:700;color:var(--blue);font-size:20px;z-index:1}
+.flow small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#888;margin-bottom:8px}
+.flow p{font-size:15.5px;color:#222}
+.case .phones .phone{border-color:#111}
+/* pricing */
+.pgrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.pgrid h2{margin:14px 0 30px}
+.trust{list-style:none;display:grid;gap:18px}
+.trust li{display:flex;gap:16px;align-items:flex-start;font-size:17px;color:#d9d9d9}
+.trust li b{display:block;color:#fff;font-size:18px;margin-bottom:2px}
+.trust .ic{flex:0 0 40px;height:40px;border-radius:50%;background:#14213a;border:1px solid #2f4d85;display:grid;place-items:center;color:var(--blue);font-weight:700}
+.timeline{margin-top:34px;padding-top:26px;border-top:1px solid #262626}
+.timeline small{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#888}
+.tl{display:flex;justify-content:space-between;margin-top:16px;position:relative}
+.tl:before{content:"";position:absolute;left:6px;right:6px;top:6px;height:2px;background:#2a2a2a}
+.tl div{position:relative;font-size:12.5px;color:#bbb;text-align:center;flex:1}
+.tl div:before{content:"";display:block;width:14px;height:14px;border-radius:50%;background:#000;border:2px solid var(--blue);margin:0 auto 10px}
+.tl div:first-child{text-align:left}.tl div:first-child:before{margin-left:0}
+.tl div:last-child{text-align:right}.tl div:last-child:before{margin-right:0;background:var(--blue)}
+.price{background:var(--blue);border-radius:30px;padding:46px 44px;display:flex;flex-direction:column;gap:22px;box-shadow:0 30px 100px rgba(41,121,255,.25)}
+.price .badge{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:#000;border-radius:99px;padding:8px 14px}
+.price .big{font-size:clamp(64px,8vw,112px);font-weight:700;letter-spacing:-.05em;line-height:.9}
+.price .per{font-size:18px;opacity:.9}
+.price .per b{font-size:24px;opacity:1}
+.price ul{list-style:none;display:grid;gap:10px;font-size:16.5px;padding-top:20px;border-top:1px solid rgba(255,255,255,.3)}
+.price li{padding-left:28px;position:relative}
+.price li:before{content:"✓";position:absolute;left:0;font-weight:700}
+.price .btn{background:#000;border-color:#000;color:#fff;box-shadow:none;width:100%}
+.price .btn:hover{background:#fff;color:#000;border-color:#fff}
+.price .fine{font-size:13.5px;opacity:.9}
+.after-price{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.after-price > div{border:1px solid #262626;border-radius:20px;padding:22px 26px;font-size:15px;color:#cfcfcf}
+.after-price b{color:#fff}
+.after-price .k{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.legal{margin-top:18px;font-size:12.5px;color:#7f7f7f;max-width:980px}
+/* faq */
+.faqgrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+.faqgrid h2{position:sticky;top:110px}
+.faq{border-top:1px solid #d0d0d0}
+.faq details{border-bottom:1px solid #d0d0d0}
+.faq summary{list-style:none;cursor:pointer;padding:24px 48px 24px 0;font-weight:700;font-size:clamp(18px,1.8vw,22px);position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";position:absolute;right:4px;top:16px;font-size:32px;font-weight:400;color:var(--blue);transition:transform .2s}
+.faq details[open] summary:after{transform:rotate(45deg)}
+.faq p{padding:0 0 24px;color:#3a3a3a;font-size:16.5px}
+/* final */
+.final{position:relative;overflow:hidden;padding:150px 0;text-align:center}
+.final .brush{position:absolute;left:50%;top:50%;width:900px;transform:translate(-50%,-50%) rotate(-12deg);opacity:.55;pointer-events:none}
+.final .wrap{position:relative}
+.final h2{font-size:clamp(46px,7.4vw,112px);max-width:1150px;margin:18px auto 44px}
+.final .ctas{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+footer{border-top:1px solid var(--line);padding:40px 0 50px;color:#9a9a9a;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-end}
+footer .iso{width:70px;color:var(--white);margin-bottom:14px}
+/* responsive */
+@media (max-width:1020px){
+  .hero-grid,.pgrid,.faqgrid,.case,.ba{grid-template-columns:1fr}
+  .visual{max-width:620px}
+  .faqgrid h2{position:static}
+  .bento{grid-template-columns:1fr 1fr}
+  .t-reels,.t-strat,.bento .t-cal,.bento .t-copy,.bento .t-script{grid-column:span 2;grid-row:auto}
+  .t-script{flex-direction:column;align-items:flex-start}
+  .scenes{justify-content:flex-start}
+}
+@media (max-width:640px){
+  section{padding:76px 0}
+  .wrap{padding:0 16px}
+  .hero{padding:48px 0 70px}
+  .navr .btn{display:none}
+  .logo{width:128px}
+  .btn{white-space:normal}
+  .btn.xl,.btn.xxl{width:100%;padding:22px 20px}
+  .out{grid-template-columns:1fr 1fr}
+  .oc small{display:none}
+  .flow{grid-template-columns:1fr}
+  .flow div:not(:last-child):after{content:"↓";right:50%;top:auto;bottom:-16px;transform:translateX(50%)}
+  .after-price{grid-template-columns:1fr}
+  .price{padding:34px 24px}
+  .ba .col{padding:26px 22px}
+  .nets{grid-template-columns:1fr 1fr}
+  .case{padding:28px 20px}
+  .tl div{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" aria-label="Antagonista"><span class="logo" id="logoSlot"></span></a>
+    <div class="navr">
+      <div class="lang" role="group" aria-label="Idioma / Language"><button data-set="es">ES</button><button data-set="en">EN</button></div>
+      <a class="btn small solid" href="#precio"><span data-l="es">Reservar plaza</span><span data-l="en">Reserve a spot</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="fitline"><span data-l="es">Tu agente de IA, listo para crear contenido para tu marca en cualquier red social.</span><span data-l="en">Your AI agent, ready to create content for your brand on any social platform.</span></p>
+      <h1><span data-l="es">Contenido con tu voz. <span class="blue">Sin tanto esfuerzo.</span></span><span data-l="en">Content in your voice. <span class="blue">Without the grind.</span></span></h1>
+      <p class="sub"><span data-l="es">Lo entrenamos con tu marca y crea el contenido de Instagram, TikTok, Facebook y LinkedIn. Tú solo revisas y apruebas.</span><span data-l="en">We train it on your brand and it creates your Instagram, TikTok, Facebook and LinkedIn content. You just review and approve.</span></p>
+      <div class="ctas">
+        <a class="btn xl solid js-pay" data-plan="ff" href="#"><span data-l="es">Reservar mi plaza · €1,000</span><span data-l="en">Reserve my spot · €1,000</span> →</a>
+      </div>
+      <p class="ff"><b>Friends &amp; Family</b><span data-l="es">Solo 5 plazas a este precio · hasta el 31 de diciembre</span><span data-l="en">Only 5 spots at this price · until December 31</span></p>
+      <p class="byline"><span data-l="es">Creado por Antagonista, casa creativa con agente de IA propio. Lo usamos con nuestras marcas antes de ofrecerlo a la tuya.</span><span data-l="en">Built by Antagonista, a creative house with its own AI agent. We use it with our brands before offering it to yours.</span></p>
+    </div>
+
+    <div class="visual">
+      <img class="brush" src="assets/brush.png" alt="">
+      <div class="win" role="img" aria-label="Ejemplo: pides 'Parrilla de noviembre' y el agente entrega estrategia, parrilla, copys y videos">
+        <div class="bar"><span></span><span></span><span></span><em><span data-l="es">Tu agente</span><span data-l="en">Your agent</span></em></div>
+        <div class="body">
+          <div class="msg"><span data-l="es">Parrilla de noviembre</span><span data-l="en">November content plan</span></div>
+          <p class="reply"><span data-l="es">Listo. Lo preparé con la voz de tu marca:</span><span data-l="en">Done. Prepared in your brand's voice:</span></p>
+          <div class="out">
+            <div class="oc"><span class="t">PDF</span><b><span data-l="es">Estrategia</span><span data-l="en">Strategy</span></b><small><span data-l="es">Objetivos y pilares del mes</span><span data-l="en">Goals and pillars for the month</span></small></div>
+            <div class="oc"><span class="t"><span data-l="es">30 DÍAS</span><span data-l="en">30 DAYS</span></span><b><span data-l="es">Parrilla</span><span data-l="en">Calendar</span></b><small><span data-l="es">Fecha, red y formato</span><span data-l="en">Date, platform and format</span></small></div>
+            <div class="oc"><span class="t">IG · TT · FB · IN</span><b>Copys</b><small><span data-l="es">Uno distinto por red</span><span data-l="en">A different one per platform</span></small></div>
+            <div class="oc"><span class="t">VIDEO</span><b><span data-l="es">Guiones y reels</span><span data-l="en">Scripts &amp; reels</span></b><small><span data-l="es">Listos para grabar o subir</span><span data-l="en">Ready to shoot or post</span></small></div>
+          </div>
+          <div class="approve"><span data-l="es">Revisa y corrige lo que quieras.</span><span data-l="en">Review and edit anything.</span><span class="ok"><span data-l="es">Aprobar</span><span data-l="en">Approve</span> ✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div>
+  <span data-l="es">Tu propio creador de contenido · Tu propio creador de contenido · Tu propio creador de contenido · Tu propio creador de contenido · Tu propio creador de contenido · Tu propio creador de contenido · Tu propio creador de contenido · Tu propio creador de contenido ·&nbsp;</span>
+  <span data-l="en">Your own content creator · Your own content creator · Your own content creator · Your own content creator · Your own content creator · Your own content creator · Your own content creator · Your own content creator ·&nbsp;</span>
+</div></div>
+
+<!-- ANTES / DESPUÉS -->
+<section class="soft">
+  <div class="wrap">
+    <div class="sec-title">
+      <p class="eyebrow"><span data-l="es">Lo que cambia</span><span data-l="en">What changes</span></p>
+      <h2><span data-l="es">De perseguir el contenido a solo aprobarlo.</span><span data-l="en">From chasing content to just approving it.</span></h2>
+    </div>
+    <div class="ba">
+      <div class="col before">
+        <p class="lbl"><span data-l="es">Hoy</span><span data-l="en">Today</span></p>
+        <div class="row"><i>01</i><span><span data-l="es">Cuatro redes y nunca alcanza el tiempo.</span><span data-l="en">Four platforms and never enough time.</span></span></div>
+        <div class="row"><i>02</i><span><span data-l="es">Una agencia cuesta cada mes y depende de una persona.</span><span data-l="en">An agency costs every month and depends on one person.</span></span></div>
+        <div class="row"><i>03</i><span><span data-l="es">La IA escribe igual para todos.</span><span data-l="en">AI writes the same for everyone.</span></span></div>
+      </div>
+      <div class="col after">
+        <p class="lbl"><span data-l="es">Con tu agente</span><span data-l="en">With your agent</span></p>
+        <div class="row"><i>01</i><span><span data-l="es">El contenido del mes, listo para revisar.</span><span data-l="en">The month's content, ready to review.</span></span></div>
+        <div class="row"><i>02</i><span><span data-l="es">Un sistema que conoce tu marca y se queda contigo.</span><span data-l="en">A system that knows your brand and stays with you.</span></span></div>
+        <div class="row"><i>03</i><span><span data-l="es">Escribe con tu voz y aprende de cada corrección.</span><span data-l="en">Writes in your voice and learns from every edit.</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ CREA -->
+<section>
+  <div class="wrap">
+    <div class="sec-title">
+      <p class="eyebrow"><span data-l="es">Qué crea</span><span data-l="en">What it creates</span></p>
+      <h2><span data-l="es">Todo lo que necesitas para publicar.</span><span data-l="en">Everything you need to post.</span></h2>
+    </div>
+    <div class="bento">
+      <div class="tile t-reels">
+        <div>
+          <h3><span data-l="es">Reels desde tu video largo</span><span data-l="en">Reels from your long video</span></h3>
+          <p><span data-l="es">Tu podcast, entrevista o evento, convertido en reels verticales con subtítulos y tu branding. Listos para subir.</span><span data-l="en">Your podcast, interview or event, turned into vertical reels with captions and your branding. Ready to post.</span></p>
+        </div>
+        <div class="phones" aria-hidden="true">
+          <div class="phone side"><span class="play"></span><span class="s"><span data-l="es">LO QUE NADIE</span><span data-l="en">WHAT NOBODY</span><em><span data-l="es">te cuenta</span><span data-l="en">tells you</span></em></span></div>
+          <div class="phone"><span class="play"></span><span class="s"><span data-l="es">JOYAS DE</span><span data-l="en">PLATINUM</span><em><span data-l="es">platino</span><span data-l="en">jewelry</span></em></span></div>
+          <div class="phone side"><span class="play"></span><span class="s"><span data-l="es">EL VERDADERO</span><span data-l="en">TRUE</span><em><span data-l="es">lujo</span><span data-l="en">luxury</span></em></span></div>
+        </div>
+      </div>
+      <div class="tile t-strat">
+        <div>
+          <h3><span data-l="es">Estrategia mensual</span><span data-l="en">Monthly strategy</span></h3>
+          <p><span data-l="es">Un PDF con tu branding: objetivos, pilares y frecuencia por red.</span><span data-l="en">A branded PDF: goals, pillars and frequency per platform.</span></p>
+        </div>
+        <div class="doc" aria-hidden="true"><span class="h"></span><span class="l"></span><span class="l s"></span><span class="l"></span><div class="row2"><span></span><span></span><span></span></div></div>
+      </div>
+      <div class="tile t-copy">
+        <div>
+          <h3><span data-l="es">Un copy distinto por red</span><span data-l="en">A different copy per platform</span></h3>
+          <p><span data-l="es">Lo que funciona en TikTok no se pega tal cual en LinkedIn.</span><span data-l="en">What works on TikTok isn't pasted onto LinkedIn.</span></p>
+        </div>
+        <div class="nets" aria-hidden="true">
+          <div><b>IG</b><i></i><i class="s"></i></div>
+          <div><b>TIKTOK</b><i></i><i class="s"></i></div>
+          <div><b>FB</b><i></i><i class="s"></i></div>
+          <div><b>LINKEDIN</b><i></i><i class="s"></i></div>
+        </div>
+      </div>
+      <div class="tile t-cal">
+        <div>
+          <h3><span data-l="es">Parrilla del mes</span><span data-l="en">Monthly calendar</span></h3>
+          <p><span data-l="es">Cada publicación con fecha, red y formato.</span><span data-l="en">Every post with date, platform and format.</span></p>
+        </div>
+        <div class="cal" aria-hidden="true">
+          <span></span><span class="p"></span><span></span><span class="p"></span><span></span><span class="p"></span><span></span>
+          <span class="p"></span><span></span><span class="p"></span><span></span><span class="p"></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="tile t-script">
+        <div>
+          <h3><span data-l="es">Guiones de video corto</span><span data-l="en">Short-form video scripts</span></h3>
+          <p><span data-l="es">Escena por escena, con el texto que va en pantalla.</span><span data-l="en">Scene by scene, with the on-screen text.</span></p>
+        </div>
+        <div class="scenes" aria-hidden="true">
+          <div class="scene"><small><span data-l="es">ESCENA 1</span><span data-l="en">SCENE 1</span></small><span>Hook · 0–3 s</span></div>
+          <div class="scene"><small><span data-l="es">ESCENA 2</span><span data-l="en">SCENE 2</span></small><span><span data-l="es">Desarrollo</span><span data-l="en">Body</span></span></div>
+          <div class="scene"><small><span data-l="es">ESCENA 3</span><span data-l="en">SCENE 3</span></small><span>CTA</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASO -->
+<section class="soft">
+  <div class="wrap">
+    <div class="case">
+      <div class="phones" aria-hidden="true">
+        <div class="phone"><span class="play"></span><span class="s"><span data-l="es">JOYAS DE</span><span data-l="en">PLATINUM</span><em><span data-l="es">platino</span><span data-l="en">jewelry</span></em></span></div>
+      </div>
+      <div>
+        <span class="tag"><span data-l="es">Caso real · Podcast de la industria del lujo</span><span data-l="en">Real case · Luxury industry podcast</span></span>
+        <h3><span data-l="es">De un episodio de 40 minutos a un reel listo para subir.</span><span data-l="en">From a 40-minute episode to a reel ready to post.</span></h3>
+        <div class="flow">
+          <div><small><span data-l="es">El reto</span><span data-l="en">Challenge</span></small><p><span data-l="es">Conversaciones valiosas que no llegaban a redes.</span><span data-l="en">Valuable conversations that never reached social.</span></p></div>
+          <div><small><span data-l="es">El agente</span><span data-l="en">The agent</span></small><p><span data-l="es">Encontró el momento con más gancho y lo cortó en vertical con subtítulos de marca.</span><span data-l="en">Found the strongest hook and cut it vertical with branded captions.</span></p></div>
+          <div><small><span data-l="es">Entregable</span><span data-l="en">Deliverable</span></small><p><span data-l="es">Reel de 34 s con su copy, y el proceso listo para los siguientes.</span><span data-l="en">A 34-second reel with copy, and the process ready for the next ones.</span></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRECIO -->
+<section id="precio">
+  <div class="wrap">
+    <div class="pgrid">
+      <div>
+        <p class="eyebrow"><span data-l="es">Precio de lanzamiento</span><span data-l="en">Launch pricing</span></p>
+        <h2><span data-l="es">Funcionando en 3 semanas. Tuyo para siempre.</span><span data-l="en">Running in 3 weeks. Yours for good.</span></h2>
+        <ul class="trust">
+          <li><span class="ic">✓</span><div><b><span data-l="es">Nada se publica sin tu aprobación</span><span data-l="en">Nothing posts without your approval</span></b><span data-l="es">Tú tienes la última palabra en cada pieza.</span><span data-l="en">You have the final say on every piece.</span></div></li>
+          <li><span class="ic">✓</span><div><b><span data-l="es">Tu información no sale de tu computadora</span><span data-l="en">Your data stays on your computer</span></b><span data-l="es">El agente, su memoria y tu marca viven ahí.</span><span data-l="en">The agent, its memory and your brand live there.</span></div></li>
+          <li><span class="ic">✓</span><div><b><span data-l="es">Si cancelas, el agente sigue siendo tuyo</span><span data-l="en">If you cancel, the agent is still yours</span></b><span data-l="es">Sigue funcionando aunque dejes el acompañamiento.</span><span data-l="en">It keeps working even if you stop the monthly plan.</span></div></li>
+        </ul>
+        <div class="timeline">
+          <small><span data-l="es">Así arrancamos</span><span data-l="en">How we start</span></small>
+          <div class="tl">
+            <div><span data-l="es">Llamada<br>30 min</span><span data-l="en">Call<br>30 min</span></div>
+            <div><span data-l="es">Onboarding<br>sem. 1</span><span data-l="en">Onboarding<br>wk 1</span></div>
+            <div><span data-l="es">Construcción<br>sem. 2</span><span data-l="en">Build<br>wk 2</span></div>
+            <div><span data-l="es">Capacitación<br>sem. 3</span><span data-l="en">Training<br>wk 3</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="price">
+        <span class="badge"><span data-l="es">Friends &amp; Family · 5 plazas</span><span data-l="en">Friends &amp; Family · 5 spots</span></span>
+        <div>
+          <div class="big">€1,000</div>
+          <p class="per"><span data-l="es">implementación, pago único · después <b>€250</b>/mes de acompañamiento (mín. 3 meses)</span><span data-l="en">one-time setup · then <b>€250</b>/month support (3-month min.)</span></p>
+        </div>
+        <ul>
+          <li><span data-l="es">Agente entrenado con la voz de tu marca</span><span data-l="en">Agent trained on your brand voice</span></li>
+          <li><span data-l="es">Instagram, TikTok, Facebook y LinkedIn</span><span data-l="en">Instagram, TikTok, Facebook and LinkedIn</span></li>
+          <li><span data-l="es">Instalación y capacitación en vivo</span><span data-l="en">Install and live training</span></li>
+          <li><span data-l="es">Sesión mensual de estrategia y soporte</span><span data-l="en">Monthly strategy session and support</span></li>
+        </ul>
+        <a class="btn xl js-pay" data-plan="ff" href="#"><span data-l="es">Reservar mi plaza</span><span data-l="en">Reserve my spot</span> →</a>
+        <p class="fine"><span data-l="es">A cambio: un caso de estudio y tu opinión honesta. Válido hasta el 31 de diciembre de 2026.</span><span data-l="en">In exchange: a case study and your honest feedback. Valid until December 31, 2026.</span></p>
+      </div>
+    </div>
+
+    <div class="after-price">
+      <div><span class="k"><span data-l="es">Desde enero 2027</span><span data-l="en">From January 2027</span></span><b>€3,500</b> <span data-l="es">implementación + <b>€490</b>/mes. ¿Prefieres hablarlo antes?</span><span data-l="en">setup + <b>€490</b>/month. Want to talk first?</span> <a class="js-book" href="#"><span data-l="es">Agenda 30 min →</span><span data-l="en">Book 30 min →</span></a></div>
+      <div><span class="k">Extras</span><span data-l="es">Publicación conectada <b>€600</b> (F&amp;F €300) · Automatización a medida desde <b>€1,200</b> · Voz adicional <b>€900</b> (F&amp;F €450)</span><span data-l="en">Connected publishing <b>€600</b> (F&amp;F €300) · Custom automation from <b>€1,200</b> · Extra voice <b>€900</b> (F&amp;F €450)</span></div>
+    </div>
+    <p class="legal"><span data-l="es">Precios en euros, sin IVA; solo honorarios. Necesitas un plan de pago de Claude (Pro como mínimo; Max si son cuatro redes o video), que no está incluido. Si cancelas el acompañamiento dejas de recibir la estrategia mensual, las actualizaciones y los nuevos procesos.</span><span data-l="en">Prices in euros, VAT not included; fees only. You need a paid Claude plan (Pro at minimum; Max for four platforms or video), not included. If you cancel support you stop receiving the monthly strategy, updates and new processes.</span></p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="light">
+  <div class="wrap faqgrid">
+    <div>
+      <p class="eyebrow"><span data-l="es">Preguntas</span><span data-l="en">Questions</span></p>
+      <h2 style="margin-top:14px"><span data-l="es">Antes de reservar.</span><span data-l="en">Before you book.</span></h2>
+    </div>
+    <div class="faq">
+      <details open><summary><span data-l="es">¿Qué es exactamente?</span><span data-l="en">What exactly is it?</span></summary>
+        <p><span data-l="es">Un agente de IA instalado en tu computadora. Lo entrenamos con tu marca (voz, audiencia, estilo, lo que sí y lo que no) y crea tu contenido cuando se lo pides.</span><span data-l="en">An AI agent installed on your computer. We train it on your brand (voice, audience, style, do's and don'ts) and it creates your content whenever you ask.</span></p></details>
+      <details><summary><span data-l="es">¿Necesito saber de IA?</span><span data-l="en">Do I need to know AI?</span></summary>
+        <p><span data-l="es">No. Le pides las cosas con una frase, como "parrilla de noviembre", y la capacitación cubre todo lo demás.</span><span data-l="en">No. You ask in one sentence, like "November content plan", and the training covers the rest.</span></p></details>
+      <details><summary><span data-l="es">¿Pueden publicar por mí?</span><span data-l="en">Can you post for me?</span></summary>
+        <p><span data-l="es">Sí, con el extra de publicación conectada: el agente deja cada pieza como borrador en tu herramienta de programación y tú apruebas.</span><span data-l="en">Yes, with the connected publishing extra: the agent drops each post as a draft in your scheduling tool and you approve.</span></p></details>
+      <details><summary><span data-l="es">¿Qué pasa después de pagar?</span><span data-l="en">What happens after I pay?</span></summary>
+        <p><span data-l="es">Te escribimos en un día hábil para agendar el onboarding. En tres semanas tu agente está funcionando.</span><span data-l="en">We'll reach out within one business day to schedule onboarding. In three weeks your agent is running.</span></p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <img class="brush" src="assets/brush.png" alt="">
+  <div class="wrap">
+    <p class="eyebrow"><span data-l="es">Friends &amp; Family · Solo 5 plazas</span><span data-l="en">Friends &amp; Family · Only 5 spots</span></p>
+    <h2><span data-l="es">Tu propio creador de contenido. <span class="blue">Disponible 24/7.</span></span><span data-l="en">Your own content creator. <span class="blue">Available 24/7.</span></span></h2>
+    <div class="ctas">
+      <a class="btn xxl solid js-pay" data-plan="ff" href="#"><span data-l="es">Reservar mi plaza · €1,000</span><span data-l="en">Reserve my spot · €1,000</span> →</a>
+      <a class="btn xxl ghost js-book" href="#"><span data-l="es">Hablar 30 min</span><span data-l="en">Talk for 30 min</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><span class="iso" id="isoSlot"></span><div><span data-l="es">La casa creativa donde todo puede pasar.</span><span data-l="en">The creative house where anything can happen.</span> EST. 2025</div></div>
+    <div style="text-align:right"><a href="#" class="js-mail">hola@antagonista.io</a><br><span>© <span id="yr">2026</span> Antagonista</span></div>
+  </div>
+</footer>
+
+<script>
+/* ====== CONFIGURACIÓN: pega aquí tus links ====== */
+const CONFIG = {
+  pay: {
+    ff:  "",   // Link de pago · Implementación Friends & Family €1,000
+    std: ""    // Link de pago · Implementación Estándar €3,500
+  },
+  booking: "",                   // Link de agenda para la llamada de 30 min
+  email: "mafercacu@gmail.com"   // Correo de contacto
+};
+/* ================================================ */
+(function(){
+  const root=document.documentElement, params=new URLSearchParams(location.search);
+  let lang=params.get("lang");
+  if(!lang){try{lang=localStorage.getItem("lang")}catch(e){}}
+  if(lang!=="en"&&lang!=="es")lang="es";
+  const setLang=l=>{root.lang=l;try{localStorage.setItem("lang",l)}catch(e){}};
+  setLang(lang);
+  document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.set)));
+  const mail="mailto:"+CONFIG.email, subj=s=>mail+"?subject="+encodeURIComponent(s);
+  document.querySelectorAll(".js-pay").forEach(a=>{
+    const url=CONFIG.pay[a.dataset.plan];
+    a.href=url||subj(a.dataset.plan==="ff"?"Agente de Contenido · Friends & Family":"Agente de Contenido · Estándar");
+    if(url){a.target="_blank";a.rel="noopener"}
+  });
+  document.querySelectorAll(".js-book").forEach(a=>{
+    a.href=CONFIG.booking||subj("Agente de Contenido · Llamada de 30 min");
+    if(CONFIG.booking){a.target="_blank";a.rel="noopener"}
+  });
+  document.querySelectorAll(".js-mail").forEach(a=>{a.href=mail;a.textContent=CONFIG.email});
+  document.getElementById("yr").textContent=new Date().getFullYear();
+  const inline=(src,id)=>fetch(src).then(r=>r.text()).then(t=>{document.getElementById(id).innerHTML=t}).catch(()=>{document.getElementById(id).innerHTML='<img src="'+src+'" alt="Antagonista">'});
+  inline("assets/logo.svg","logoSlot"); inline("assets/isotipo.svg","isoSlot");
+})();
+</script>
+</body>
+</html>
